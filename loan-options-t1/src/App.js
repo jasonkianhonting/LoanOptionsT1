@@ -64,8 +64,18 @@ function App() {
 							<TableCell component="th" scope="row">
 								{row.name}
 							</TableCell>
-							<TableCell align="left">{row.domains}</TableCell>
-							<TableCell align="left">{row.web_pages}</TableCell>
+							<TableCell>
+								{row.domains.map((domainsRow) => (
+									<Stack spacing={4}>{domainsRow}</Stack>
+								))}
+							</TableCell>
+
+							<TableCell>
+								{row.web_pages.map((webPagesRow) => (
+									<Stack spacing={4}>{webPagesRow}</Stack>
+								))}
+							</TableCell>
+
 							<TableCell align="left">{row.alpha_two_code}</TableCell>
 							<TableCell align="left">{row.country}</TableCell>
 						</TableRow>
@@ -98,7 +108,9 @@ function App() {
 						Add
 					</Button>
 				</Stack>
-				{loading ? <LinearProgress /> : populateData}
+				<div className="table">
+					{loading ? <LinearProgress /> : populateData}
+				</div>
 			</div>
 		</div>
 	);
