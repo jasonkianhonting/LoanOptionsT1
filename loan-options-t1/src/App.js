@@ -19,6 +19,8 @@ function App() {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const errorMessage = "Please contact your admin";
+	const errorButtonMessage =
+		"No data in the table, populate it by pressing the load button";
 
 	//Defining function where it fetches the data while setting the use state to be true so that a loading bar will appear
 	//It is also defined in a try catch block for error handling
@@ -43,16 +45,52 @@ function App() {
 		}
 	};
 
+	//Defining this function to delete the last item by using the in built function- pop and send an alert to let users know that an item has been deleted
+	//Try and catch block is also defined for error handling
 	const deleteData = async () => {
 		try {
+			//Setting this hook true so that the progress bar will appear
 			setLoading(true);
 			let dataPop = await data.pop();
+
+			//If the deletion is successful, save the data in the hook
 			if (dataPop) {
 				alert(`${dataPop.name} has been deleted from the table`);
 				setData(data);
 				setLoading(false);
+
+				//Otherwise alert an error message
 			} else {
 				setLoading(false);
+				alert(errorButtonMessage);
+				throw new Error(errorMessage);
+			}
+		} catch (err) {
+			setLoading(false);
+			throw new Error(err.message);
+		}
+	};
+
+	//Defining the function to add the first item in the dataset to the last by using the in built function - push and
+	//send an alert to let the users know that the first item has been added
+	//Try and catch block is also implemented for error handling
+	const addData = async () => {
+		try {
+			//Setting this hook true so that the progress bar will appear
+			setLoading(true);
+			//If data is present (after load button has been pressed), add the data into the existing dataset and update the
+			//dataset
+			if (data.length !== 0) {
+				let dataPush = await data.push(data[0]);
+				if (dataPush) {
+					alert(`${data[0].name} has been added to the table`);
+					setData(data);
+					setLoading(false);
+				}
+				//Otherwise alert the users with the appropriate error message
+			} else {
+				setLoading(false);
+				alert(errorButtonMessage);
 				throw new Error(errorMessage);
 			}
 		} catch (err) {
@@ -127,7 +165,7 @@ function App() {
 					>
 						Delete
 					</Button>
-					<Button variant="contained" startIcon={<AddIcon />}>
+					<Button variant="contained" onClick={addData} startIcon={<AddIcon />}>
 						Add
 					</Button>
 				</Stack>
