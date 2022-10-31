@@ -14,7 +14,6 @@ Secondly, install the dependencies by running:
 npm install
 ```
 ### Note that the time to install the dependencies depend on your internet connectivity
-<br>
 
 Lastly, you can run the application by running:
 
