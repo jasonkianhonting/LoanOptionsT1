@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
@@ -18,6 +18,7 @@ function App() {
 	//Defining variables with hooks
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
+	const errorMessage = "Please contact your admin";
 
 	//Defining function where it fetches the data while setting the use state to be true so that a loading bar will appear
 	//It is also defined in a try catch block for error handling
@@ -34,11 +35,29 @@ function App() {
 				setLoading(false);
 			} else {
 				setLoading(false);
-				throw new Error("Please contact your admin");
+				throw new Error(errorMessage);
 			}
 		} catch (error) {
 			setLoading(false);
 			throw new Error(error.message);
+		}
+	};
+
+	const deleteData = async () => {
+		try {
+			setLoading(true);
+			let dataPop = await data.pop();
+			if (dataPop) {
+				alert(`${dataPop.name} has been deleted from the table`);
+				setData(data);
+				setLoading(false);
+			} else {
+				setLoading(false);
+				throw new Error(errorMessage);
+			}
+		} catch (err) {
+			setLoading(false);
+			throw new Error(err.message);
 		}
 	};
 
@@ -101,7 +120,11 @@ function App() {
 					>
 						Load
 					</Button>
-					<Button variant="contained" startIcon={<DeleteIcon />}>
+					<Button
+						variant="contained"
+						onClick={deleteData}
+						startIcon={<DeleteIcon />}
+					>
 						Delete
 					</Button>
 					<Button variant="contained" startIcon={<AddIcon />}>
