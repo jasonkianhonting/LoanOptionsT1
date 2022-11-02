@@ -1,4 +1,7 @@
+//Importing css file for the application
 import "./App.css";
+
+//Import the redux and material UI components
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -12,10 +15,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import LinearProgress from "@mui/material/LinearProgress";
+import CircularProgress from "@mui/material/CircularProgress";
 
+//This function is the main function that populates the data, creates additional nested functions to handle buttons click,
+//fetching data, error handling and populate data. It also returns html codes to help design the website
 function App() {
-	//Defining variables with hooks
+	//Defining variables with hooks and default error messages
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const errorMessage = "Please contact your admin";
@@ -102,14 +107,15 @@ function App() {
 	//This is used to configure and manipulate HTML and material UI components to work cohesively with the application
 	const populateData = (
 		<TableContainer component={Paper}>
-			<Table sx={{ minWidth: 650 }} aria-label="simple table">
+			<Table sx={{ minWidth: 700 }} aria-label="simple table">
 				<TableHead>
+					{/* Creating table cells for each row*/}
 					<TableRow>
-						<TableCell>Name</TableCell>
+						<TableCell align="left">Name</TableCell>
 						<TableCell align="left">Domains</TableCell>
 						<TableCell align="left">Web Pages</TableCell>
+						<TableCell align="left">Country Name</TableCell>
 						<TableCell align="left">Country Code</TableCell>
-						<TableCell align="left">Country</TableCell>
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -122,19 +128,21 @@ function App() {
 								{row.name}
 							</TableCell>
 							<TableCell>
+								{/* Extract the nested array in domains */}
 								{row.domains.map((domainsRow) => (
-									<Stack spacing={4}>{domainsRow}</Stack>
+									<Stack>{domainsRow}</Stack>
 								))}
 							</TableCell>
 
 							<TableCell>
+								{/* Extract the nested array in web pages */}
 								{row.web_pages.map((webPagesRow) => (
-									<Stack spacing={4}>{webPagesRow}</Stack>
+									<Stack>{webPagesRow}</Stack>
 								))}
 							</TableCell>
 
-							<TableCell align="left">{row.alpha_two_code}</TableCell>
 							<TableCell align="left">{row.country}</TableCell>
+							<TableCell align="center">{row.alpha_two_code}</TableCell>
 						</TableRow>
 					))}
 				</TableBody>
@@ -151,6 +159,7 @@ function App() {
 					alignItems="center"
 					spacing={2}
 				>
+					{/* First button (Load button) */}
 					<Button
 						variant="contained"
 						onClick={fetchData}
@@ -158,6 +167,7 @@ function App() {
 					>
 						Load
 					</Button>
+					{/* Second button (Delete button) */}
 					<Button
 						variant="contained"
 						onClick={deleteData}
@@ -165,12 +175,14 @@ function App() {
 					>
 						Delete
 					</Button>
+					{/* Third button (Add button) */}
 					<Button variant="contained" onClick={addData} startIcon={<AddIcon />}>
 						Add
 					</Button>
 				</Stack>
+				{/* If loading is true, input progress logo otherwise popualte the table */}
 				<div className="table">
-					{loading ? <LinearProgress /> : populateData}
+					{loading ? <CircularProgress /> : populateData}
 				</div>
 			</div>
 		</div>
